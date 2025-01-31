@@ -13,11 +13,14 @@ if ! grep -q "# <<< INIT Function for cmd.sh" ~/.zshrc; then
 
 # Init function to save directory paths with custom commands for zsh
 
+protected_commands=($(builtin)) # Get built-in shell commands
+protected_commands+=($(alias | awk -F= '{print $1}')) # Get existing aliases
+protected_commands+=($(whence -m '*')) # Get all defined shell functions
+protected_commands+=("ls" "cd" "mv" "rm" "cp" "echo" "exit" "pwd" "source" "grep" "sed" "awk")
+
+
 init() {
     local command_name="$1"
-    local protected_commands=($(alias) $(whence -w))
-    protected_commands=($(echo "${protected_commands[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
-    
     current_path=$(pwd)  # Save the current working directory
     echo "Current directory is: $current_path"
     
@@ -52,8 +55,13 @@ init() {
 }
 
 rmv() {
-    echo "Enter the custom command you'd like to remove (e.g., 'ad'): "
-    read command_name
+    local command_name="$1"
+    
+    if [[ -z "$command_name" ]]; then
+        echo "Enter the custom command you'd like to remove (e.g., 'ad'): "
+        read command_name
+    fi
+    
     if grep -q "alias $command_name=" ~/.zshrc; then
         echo "Are you sure you want to remove the alias '$command_name'? (y/n)"
         read confirmation
@@ -90,4 +98,4 @@ EOF
 else
     echo "The init function already exists in ~/.zshrc."
     echo "You can now use the 'init' command in your terminal."
-fi
+fi 
