@@ -40,9 +40,6 @@ quickfind
 
 When you finish installing it, just follow the instructions on screen and **exit** and **restart the terminal session**. 
 ---
-Here’s a revised version of your troubleshooting guide:
-
----
 
 ## Troubleshooting
 
