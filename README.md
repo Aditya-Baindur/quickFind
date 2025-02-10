@@ -62,10 +62,6 @@ If you continue to experience issues, please [open a new issue](https://github.c
 
 ---
 
-Just replace `your-username/your-repository` with your actual GitHub username and repository name to link correctly.
-
----
-
 ## Usage
 How to use the project.
 
