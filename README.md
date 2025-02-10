@@ -1,4 +1,7 @@
-# quickFind - The terminal buddy 
+# quickFind - The ZSH terminal buddy 
+
+Please note that this program is intended for use on **MACOS** and has NOT been tested for Windows or Linux.
+If you do want to make version for those, please look at - [Contributing](#contributing)
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -91,6 +94,10 @@ To uninstall **quickfind** and remove its configuration from your system, follow
 How to contribute.
 
 You can fork this repo and have a pull request, I will review and update the brew formule if required. 
+
+Some ideas which you can use to update this project would be to create the same version for Windows or a Linux distribution. 
+
+Any other ideas are more than welcomed :) 
 
 ---
 
