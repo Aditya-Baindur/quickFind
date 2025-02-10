@@ -1,7 +1,11 @@
 #!/bin/zsh
 
+# This script was made by Aditya Baindur in Canadian Winter 2025
+# Last update - 2025-02-10 ; 10th February 2025
+# All rights reserved 
+
 # Check if the function block already exists in ~/.zshrc
-if ! grep -q "# <<< INIT Function for cmd.sh" ~/.zshrc; then
+if ! grep -q "# <<< ALL FUNCTIONS FOR quickfind - © Aditya Baindur - Winter 2025 <<<" ~/.zshrc; then
     echo "Saving the init function to ~/.zshrc for future use..."
 
     # Append the function definitions to ~/.zshrc
@@ -9,7 +13,7 @@ if ! grep -q "# <<< INIT Function for cmd.sh" ~/.zshrc; then
         cat << 'EOF' >> ~/.zshrc
 
 
-# <<< INIT Function for cmd.sh  - © Aditya Baindur <<<
+# <<< ALL FUNCTIONS FOR quickfind - © Aditya Baindur - Winter 2025 <<<
 
 # Init function to save directory paths with custom commands for zsh
 
@@ -88,6 +92,9 @@ list() {
     done
     echo "------"
 }
+
+# <<< END OF quickfind - © Aditya Baindur - Winter 2025<<<
+
 EOF
         echo "The init, rmv, and list functions have been saved to ~/.zshrc!"
         echo "-----PLEASE RESTART THIS TERMINAL--------------"
