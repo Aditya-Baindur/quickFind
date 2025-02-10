@@ -70,7 +70,7 @@ Once you install it, there are a couple things :
 | Command | Arguments | Function                                | Example Usage       |
 | ------- | --------- | --------------------------------------- | ------------------- |
 | init    | yes       | Creates a new hotkey                    | `init yourname`      |
-| rvm     | yes       | Removes an existing hotkey              | `rmv yourname`       |
+| rmv     | yes       | Removes an existing hotkey              | `rmv yourname`       |
 | list    | no        | Lists all hotkeys created on the device | `list`               |
 
 
