@@ -6,8 +6,9 @@ If you do want to make version for those, please look at - [Contributing](#contr
 ## Table of Contents
 - [Introduction](#introduction)
 - [Installation](#installation)
+- [Troubleshooting](#troubleshooting)
 - [Usage](#usage)
-- [Uninstallation Guide](#Uninstallation)
+- [Uninstallation Guide](#uninstallation)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -38,6 +39,33 @@ quickfind
 ```
 
 When you finish installing it, just follow the instructions on screen and **exit** and **restart the terminal session**. 
+---
+Here’s a revised version of your troubleshooting guide:
+
+---
+
+## Troubleshooting
+
+If you encounter the following error when running the `quickfind` command after installing with `brew install quickfind`:
+
+```
+grep: /Users/adityabaindur/.zshrc: No such file or directory
+```
+
+It means that the `.zshrc` file doesn't exist yet. To resolve this, simply run the following commands:
+
+```bash
+touch ~/.zshrc
+quickfind
+```
+
+The `touch` command will create the `.zshrc` file, and then `quickfind` will run properly.
+
+If you continue to experience issues, please [open a new issue](https://github.com/aditya-baindur/quickfind/issues) in the Issues tab.
+
+---
+
+Just replace `your-username/your-repository` with your actual GitHub username and repository name to link correctly.
 
 ---
 
