@@ -6,7 +6,6 @@
 
 #define CONFIG_PATH_SUFFIX "/.quickfind/aliases.db"
 #define MAX_LINE 512
-#define ZSHRC_APPEND_TAG "# <<< quickfind cd override >>>"
 
 char* get_config_path() {
     const char* home = getenv("HOME");
@@ -37,9 +36,17 @@ void ensure_config() {
 
 void init_alias(const char* name) {
     char cwd[1024];
-    getcwd(cwd, sizeof(cwd));
+    if (!getcwd(cwd, sizeof(cwd))) {
+        perror("getcwd");
+        exit(1);
+    }
 
     FILE *file = fopen(get_config_path(), "a");
+    if (!file) {
+        perror("fopen");
+        exit(1);
+    }
+
     fprintf(file, "%s=%s\n", name, cwd);
     fclose(file);
     printf("Saved '%s' -> %s\n", name, cwd);
@@ -48,6 +55,11 @@ void init_alias(const char* name) {
 void remove_alias(const char* name) {
     FILE *src = fopen(get_config_path(), "r");
     FILE *tmp = fopen("/tmp/.quickfind.tmp", "w");
+    if (!src || !tmp) {
+        fprintf(stderr, "Failed to open alias database or temp file.\n");
+        exit(1);
+    }
+
     char line[MAX_LINE];
     int found = 0;
 
@@ -71,6 +83,11 @@ void remove_alias(const char* name) {
 
 void list_aliases() {
     FILE *file = fopen(get_config_path(), "r");
+    if (!file) {
+        fprintf(stderr, "Alias DB not found. Use `quickfind init <alias>` first.\n");
+        exit(1);
+    }
+
     char line[MAX_LINE];
     printf("Saved aliases:\n");
     while (fgets(line, sizeof(line), file)) {
@@ -81,72 +98,23 @@ void list_aliases() {
 
 void get_alias(const char* name) {
     FILE *file = fopen(get_config_path(), "r");
+    if (!file) {
+        fprintf(stderr, "Alias DB not found.\n");
+        exit(1);
+    }
+
     char line[MAX_LINE];
     while (fgets(line, sizeof(line), file)) {
         if (strncmp(line, name, strlen(name)) == 0 && line[strlen(name)] == '=') {
-            printf("%s", line + strlen(name) + 1);  // just print the path
+            printf("%s", line + strlen(name) + 1);  // path only
             fclose(file);
             return;
         }
     }
+
     fclose(file);
     fprintf(stderr, "Alias '%s' not found.\n", name);
     exit(1);
-}
-
-void init_shell_integration() {
-    const char* home = getenv("HOME");
-    if (!home) {
-        fprintf(stderr, "Unable to determine home directory.\n");
-        exit(1);
-    }
-
-    char zshrc_path[1024];
-    snprintf(zshrc_path, sizeof(zshrc_path), "%s/.zshrc", home);
-
-    FILE* file = fopen(zshrc_path, "r");
-    if (!file) {
-        fprintf(stderr, "Could not open ~/.zshrc for reading.\n");
-        return;
-    }
-
-    char line[MAX_LINE];
-    int already_present = 0;
-
-    while (fgets(line, sizeof(line), file)) {
-        if (strstr(line, ZSHRC_APPEND_TAG)) {
-            already_present = 1;
-            break;
-        }
-    }
-    fclose(file);
-
-    if (already_present) {
-        printf("Quickfind shell integration already exists in ~/.zshrc.\n");
-        return;
-    }
-
-    file = fopen(zshrc_path, "a");
-    if (!file) {
-        fprintf(stderr, "Could not open ~/.zshrc for appending.\n");
-        return;
-    }
-
-    fprintf(file, "\n%s\n", ZSHRC_APPEND_TAG);
-    fprintf(file,
-        "function cd() {\n"
-        "  if quickfind \"$1\" >/dev/null 2>&1; then\n"
-        "    builtin cd \"$(quickfind \"$1\")\"\n"
-        "  else\n"
-        "    builtin cd \"$@\"\n"
-        "  fi\n"
-        "}\n"
-        "# <<< end quickfind cd override >>>\n\n"
-    );
-    fclose(file);
-
-    printf("quickfind shell integration added to ~/.zshrc!\n");
-    printf("Run `source ~/.zshrc` or restart your terminal to activate it.\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -157,12 +125,17 @@ int main(int argc, char* argv[]) {
         } else if (strcmp(argv[1], "--brew") == 0) {
             printf("true\n");
             return 0;
-
         } else if (strcmp(argv[1], "--help") == 0) {
-            printf("Usage: quickfind [init <name> | rmv <name> | list | init-shell | <alias>]\n");
+            printf("Usage: quickfind [init <alias> | rmv <alias> | list | cd <alias> | <alias>]\n");
+            printf("  init <alias>   Save current directory as alias\n");
+            printf("  rmv <alias>    Remove alias\n");
+            printf("  list           Show all saved aliases\n");
+            printf("  cd <alias>     Print path for alias (used by qfcd)\n");
+            printf("  <alias>        Print path for alias\n");
             printf("Flags:\n");
-            printf("  --version     Show version info\n");
-            printf("  --help        Show this help message\n");
+            printf("  --version      Show version\n");
+            printf("  --help         Show help\n");
+            printf("  --brew         Used for Homebrew test\n");
             return 0;
         }
     }
@@ -170,7 +143,7 @@ int main(int argc, char* argv[]) {
     ensure_config();
 
     if (argc < 2) {
-        fprintf(stderr, "Usage: quickfind [init|rmv|list|init-shell|<alias>]\n");
+        fprintf(stderr, "Usage: quickfind [init|rmv|list|cd <alias>|<alias>]\n");
         return 1;
     }
 
@@ -180,10 +153,10 @@ int main(int argc, char* argv[]) {
         remove_alias(argv[2]);
     } else if (strcmp(argv[1], "list") == 0) {
         list_aliases();
-    } else if (strcmp(argv[1], "init-shell") == 0) {
-        init_shell_integration();
+    } else if (strcmp(argv[1], "cd") == 0 && argc == 3) {
+        get_alias(argv[2]);
     } else if (argc == 2) {
-        get_alias(argv[1]); // quickfind <alias>
+        get_alias(argv[1]);
     } else {
         fprintf(stderr, "Invalid command.\n");
         return 1;
