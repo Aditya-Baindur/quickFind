@@ -1,9 +1,13 @@
-# quickFind - The ZSH terminal buddy 
+# QuickFind - The terminal buddy
 
 Please note that this program is intended for use on **MACOS** and has NOT been tested for Windows or Linux.
+
 If you do want to make version for those, please look at - [Contributing](#contributing)
 
+---
+
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Troubleshooting](#troubleshooting)
@@ -12,13 +16,15 @@ If you do want to make version for those, please look at - [Contributing](#contr
 - [Contributing](#contributing)
 - [License](#license)
 
+---
+
 ## Introduction
 
-So the idea is simple. 
+So the idea is simple.
 
-I wanted to make a bash script which basically allows you to basically `save` a directory path, so that wherever you are, you can just put the command in the cmd line, then you gonna be cd’ed into the main directory. 
+I wanted to make a bash script which basically allows you to basically `save` a directory path, so that wherever you are, you can just put the command in the cmd line, then you gonna be cd’ed into the main directory.
 
-This is especially useful when you want to work on a project with people and are using git. 
+This is especially useful when you want to work on a project with people and are using git.
 
 For example, I can map the command `ad` → `./user/desktop/bash_projects/”The Shortcut”`
 
@@ -28,24 +34,25 @@ and every time I do `ad`, i’ll be cd’ed into that directory
 
 ## Installation
 
-Instructions for installing. 
+Instructions for installing :
 
-You just need to run these 2 commands in your terminal, of you copy both commands and past then both in a terminal, it should work correctly too. 
-You can also just do one command at a time. 
+You just need to run these 2 commands in your terminal, of you copy both commands and past then both in a terminal, it should work correctly too.
+You can also just do one command at a time.
 
 ```bash
 brew install aditya-baindur/aditya-baindur-homebrew-tap/quickfind
 quickfind
 ```
 
-When you finish installing it, just follow the instructions on screen and **exit** and **restart the terminal session**. 
+When you finish installing it, just follow the instructions on screen and **exit** and **restart the terminal session**.
+
 ---
 
 ## Troubleshooting
 
 If you encounter the following error when running the `quickfind` command after installing with `brew install quickfind`:
 
-```
+``` bash
 grep: /Users/adityabaindur/.zshrc: No such file or directory
 ```
 
@@ -63,9 +70,10 @@ If you continue to experience issues, please [open a new issue](https://github.c
 ---
 
 ## Usage
+
 How to use the project.
 
-Once you install it, there are a couple things : 
+Once you install it, there are a couple things :
 
 | Command | Arguments | Function                                | Example Usage       |
 | ------- | --------- | --------------------------------------- | ------------------- |
@@ -73,9 +81,7 @@ Once you install it, there are a couple things :
 | rmv     | yes       | Removes an existing hotkey              | `rmv yourname`       |
 | list    | no        | Lists all hotkeys created on the device | `list`               |
 
-
 Please also note that the arguments are not strictly necessary, the program will prompt you to add or remove a name if you do not specify and argument.
-
 
 Here’s a refined version of your uninstallation guide with some added clarity and detail for a smoother experience:
 
@@ -108,17 +114,17 @@ To uninstall **quickfind** and remove its configuration from your system, follow
 
 5. You may need to **restart your terminal** or run `source ~/.zshrc` to apply the changes.
 
---- 
-
+---
 
 ## Contributing
+
 How to contribute.
 
-You can fork this repo and have a pull request, I will review and update the brew formule if required. 
+You can fork this repo and have a pull request, I will review and update the brew formule if required.
 
-Some ideas which you can use to update this project would be to create the same version for Windows or a Linux distribution. 
+Some ideas which you can use to update this project would be to create the same version for Windows or a Linux distribution.
 
-Any other ideas are more than welcomed :) 
+Any other ideas are more than welcomed :)
 
 ---
 
