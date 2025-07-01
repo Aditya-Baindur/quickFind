@@ -150,6 +150,23 @@ void init_shell_integration() {
 }
 
 int main(int argc, char* argv[]) {
+    if (argc >= 2) {
+        if (strcmp(argv[1], "--version") == 0) {
+            printf("quickfind version 1.0.0\n");
+            return 0;
+        } else if (strcmp(argv[1], "--brew") == 0) {
+            printf("true\n");
+            return 0;
+
+        } else if (strcmp(argv[1], "--help") == 0) {
+            printf("Usage: quickfind [init <name> | rmv <name> | list | init-shell | <alias>]\n");
+            printf("Flags:\n");
+            printf("  --version     Show version info\n");
+            printf("  --help        Show this help message\n");
+            return 0;
+        }
+    }
+
     ensure_config();
 
     if (argc < 2) {
