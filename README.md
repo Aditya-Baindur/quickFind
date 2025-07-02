@@ -8,6 +8,8 @@ Please note that this program is intended for use on **macOS, Ubuntu, and Debian
 
 If you would like to build support for other environments or enhance the existing functionality, check out the [Contributing](#contributing) section below for how to get started.
 
+If you prefer using shell specifict scripts in zshrc or bashrc, you should checkout the [shell-wrappers](/quickFind/shell-wrappers/) folder
+
 ---
 
 ## Table of Contents
