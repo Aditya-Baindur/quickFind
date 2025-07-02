@@ -126,16 +126,14 @@ int main(int argc, char* argv[]) {
             printf("true\n");
             return 0;
         } else if (strcmp(argv[1], "--help") == 0) {
-            printf("Usage: quickfind [init <alias> | rmv <alias> | list | cd <alias> | <alias>]\n");
+            printf("Usage: quickfind [init <alias> | rmv <alias> | list | cd <alias>]\n");
             printf("  init <alias>   Save current directory as alias\n");
             printf("  rmv <alias>    Remove alias\n");
             printf("  list           Show all saved aliases\n");
-            printf("  cd <alias>     Print path for alias (used by qfcd)\n");
             printf("  <alias>        Print path for alias\n");
             printf("Flags:\n");
             printf("  --version      Show version\n");
             printf("  --help         Show help\n");
-            printf("  --brew         Used for Homebrew test\n");
             return 0;
         }
     }
@@ -143,7 +141,7 @@ int main(int argc, char* argv[]) {
     ensure_config();
 
     if (argc < 2) {
-        fprintf(stderr, "Usage: quickfind [init|rmv|list|cd <alias>|<alias>]\n");
+        fprintf(stderr, "Usage: quickfind [init|rmv|list|cd <alias>| --help]\n");
         return 1;
     }
 

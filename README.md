@@ -1,133 +1,202 @@
 # QuickFind - The terminal buddy
 
-Please note that this program is intended for use on **MACOS** and has NOT been tested for Windows or Linux.
+<p align="center">
+  <img src="demo.gif" alt="QuickFind demo" width="700">
+</p>
 
-If you do want to make version for those, please look at - [Contributing](#contributing)
+Please note that this program is intended for use on **macOS, Ubuntu, and Debian** and has NOT been tested on Windows, WSL, or other Linux distributions (like Arch, Kali, etc...). We recommend using one of the supported platforms for best results and smoothest setup experience.
+
+If you would like to build support for other environments or enhance the existing functionality, check out the [Contributing](#contributing) section below for how to get started.
 
 ---
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Troubleshooting](#troubleshooting)
-- [Usage](#usage)
-- [Uninstallation Guide](#uninstallation)
-- [Contributing](#contributing)
-- [License](#license)
+* [Introduction](#introduction)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Advanced Features](#advanced-features)
+* [Uninstallation Guide](#uninstallation)
+* [Troubleshooting](#troubleshooting)
+* [Contributing](#contributing)
+* [License](#license)
 
 ---
 
 ## Introduction
 
-So the idea is simple.
+Tired of navigating deep folder trees manually? Spending too much time `cd`-ing around a large codebase or multi-repo setup?
 
-I wanted to make a bash script which basically allows you to basically `save` a directory path, so that wherever you are, you can just put the command in the cmd line, then you gonna be cd’ed into the main directory.
+**QuickFind** lets you save aliases to directories and instantly jump to them with short commands. It’s like a bookmark system for your terminal — fast, efficient, and shell-agnostic. This is especially useful when working across large codebases, remote development environments, or within monorepos with complex folder structures.
 
-This is especially useful when you want to work on a project with people and are using git.
+For example, instead of typing:
 
-For example, I can map the command `ad` → `./user/desktop/bash_projects/”The Shortcut”`
+```bash
+cd ~/Documents/work/projects/2025/quickfind/shell-wrappers
+```
 
-and every time I do `ad`, i’ll be cd’ed into that directory
+You can do:
+
+```bash
+qfcd shell
+```
+
+And you'll be taken there — from **anywhere** in your terminal session!
+
+This works across all major POSIX shells (`bash`, `zsh`, `sh`, etc.) and is particularly powerful for developers and collaborators working in shared directory structures or remote development containers.
 
 ---
 
 ## Installation
 
-Instructions for installing :
-
-You just need to run these 2 commands in your terminal, of you copy both commands and past then both in a terminal, it should work correctly too.
-You can also just do one command at a time.
+The easiest way to get started is with Homebrew:
 
 ```bash
-brew install aditya-baindur/aditya-baindur-homebrew-tap/quickfind
-quickfind
+brew install aditya-baindur/quickfind/quickfind
 ```
 
-When you finish installing it, just follow the instructions on screen and **exit** and **restart the terminal session**.
+If you **do not have Homebrew** installed, you can install QuickFind manually:
 
----
+````bash
+git clone https://github.com/Aditya-Baindur/quickFind.git 
+cd quickFind
 
-## Troubleshooting
+# You will need to install make if it is not already installed:
+# Download it from: https://www.gnu.org/software/make
 
-If you encounter the following error when running the `quickfind` command after installing with `brew install quickfind`:
+# Then you can run:
+make install
+```bash
+brew install aditya-baindur/quickfind/quickfind
+````
 
-``` bash
-grep: /Users/adityabaindur/.zshrc: No such file or directory
-```
-
-It means that the `.zshrc` file doesn't exist yet. To resolve this, simply run the following commands:
+Or, step-by-step:
 
 ```bash
-touch ~/.zshrc
-quickfind
+brew tap aditya-baindur/quickfind
+brew install quickfind
 ```
 
-The `touch` command will create the `.zshrc` file, and then `quickfind` will run properly.
+Once installed, you'll be prompted to enable the `qfcd()` helper function. This may require `sudo` because it writes to a system-wide profile file (`/etc/profile.d/qfcd.sh`) to ensure compatibility with all login shells.
 
-If you continue to experience issues, please [open a new issue](https://github.com/aditya-baindur/quickfind/issues) in the Issues tab.
+> 🧠 To use `qfcd` immediately without restarting your shell:
+>
+> ```bash
+> . /etc/profile.d/qfcd.sh
+> ```
 
 ---
 
 ## Usage
 
-How to use the project.
+Once installed, use `quickfind` to create and manage directory shortcuts (aka "aliases"). These are stored locally and are available from any terminal session.
 
-Once you install it, there are a couple things :
+| Command                 | Description                                        | Example                   |
+| ----------------------- | -------------------------------------------------- | ------------------------- |
+| `quickfind init <name>` | Saves the current working directory as `<name>`    | `quickfind init projectx` |
+| `quickfind rmv <name>`  | Deletes the saved alias `<name>`                   | `quickfind rmv projectx`  |
+| `quickfind list`        | Displays all aliases and their corresponding paths | `quickfind list`          |
+| `quickfind cd <name>`   | Outputs the full path of a saved alias             | `quickfind cd projectx`   |
+| `quickfind <name>`      | Shorthand for printing the alias path              | `quickfind projectx`      |
 
-| Command | Arguments | Function                                | Example Usage       |
-| ------- | --------- | --------------------------------------- | ------------------- |
-| init    | yes       | Creates a new hotkey                    | `init yourname`      |
-| rmv     | yes       | Removes an existing hotkey              | `rmv yourname`       |
-| list    | no        | Lists all hotkeys created on the device | `list`               |
+You can also view usage instructions and version info:
 
-Please also note that the arguments are not strictly necessary, the program will prompt you to add or remove a name if you do not specify and argument.
+```bash
+quickfind --help
+quickfind --version
+```
 
-Here’s a refined version of your uninstallation guide with some added clarity and detail for a smoother experience:
+### Jumping with `qfcd`
+
+Once the helper function is installed, you can jump to any saved alias with one short command:
+
+```bash
+qfcd <alias>
+```
+
+It behaves just like `cd`, but it resolves the alias via `quickfind` under the hood.
+
+### Examples
+
+```bash
+$ cd ~/projects/quickfind
+$ quickfind init qf
+Saved 'qf' -> /home/user/projects/quickfind
+
+$ qfcd qf
+# Instantly jumps to /home/user/projects/quickfind from anywhere in your terminal
+
+$ quickfind list
+Saved aliases:
+  qf=/home/user/projects/quickfind
+```
+
+---
+
+## Advanced Features
+
+* **Shell Agnostic**: Works on any shell that supports POSIX-style login scripts. That includes `bash`, `zsh`, `sh`, `ksh`, and many more.
+* **Cross-session Persistence**: Aliases persist across reboots and shell instances.
+* **Scripting-Friendly**: Use `quickfind cd <alias>` in your scripts to dynamically resolve paths.
+* **Lightweight**: No background processes, no daemons — just fast path resolution!
 
 ---
 
 ## Uninstallation
 
-To uninstall **quickfind** and remove its configuration from your system, follow these steps carefully:
+To remove `quickfind` and all of its related files, run:
 
-1. **Open your `~/.zshrc` file**:
+```bash
+brew uninstall aditya-baindur/quickfind/quickfind
+```
 
-   ```bash
-   open ~/.zshrc
-   ```
+> ⚠️ Note: This only removes the binary. If you want to do a full cleanup:
+>
+> ```bash
+> sudo rm /etc/profile.d/qfcd.sh
+> rm -rf ~/.quickfind
+> ```
 
-2. **Remove the `quickfind` configuration**:
+This will remove both the installed helper function and your saved aliases.
 
-   - Locate the following two sections in your `~/.zshrc` file:
-     - `# <<< ALL FUNCTIONS FOR quickfind - © Aditya Baindur <<<`
-     - `# <<< END OF quickfind - © Aditya Baindur <<<`
+---
 
-   - Delete everything between these two lines, **including** these lines themselves.
+## Troubleshooting
 
-3. **Important**: Be cautious when editing your `~/.zshrc` file:
+QuickFind is designed to be minimal, simple, and reliable. But here are a few tips if something doesn't work as expected:
 
-   - **Do not delete any other content** in the file, as this may affect your other configurations and extensions.
-   - If you’re unsure, consider backing up your `~/.zshrc` file before making any changes.
+* Make sure `/etc/profile.d/qfcd.sh` is being sourced in your shell.
+* If using `zsh`, consider adding this to your `~/.zprofile` manually:
 
-4. **Save and close** the file.
+```bash
+source /etc/profile.d/qfcd.sh
+```
 
-5. You may need to **restart your terminal** or run `source ~/.zshrc` to apply the changes.
+* Verify that the binary is installed by running `which quickfind`
+* If alias resolution fails, check that the alias exists by running `quickfind list`
+
+Still having trouble? [File an issue](https://github.com/aditya-baindur/quickfind/issues) and describe your OS, shell, and what’s not working.
 
 ---
 
 ## Contributing
 
-How to contribute.
+This project is open-source and community-driven. If you have a feature idea, bug fix, or OS-specific improvement, we'd love to hear from you!
 
-You can fork this repo and have a pull request, I will review and update the brew formule if required.
+To contribute:
 
-Some ideas which you can use to update this project would be to create the same version for Windows or a Linux distribution.
+1. Fork the repository
+2. Make your changes in a new branch
+3. Submit a pull request (with a description of what you did)
 
-Any other ideas are more than welcomed :)
+Ideas welcome — especially:
+
+* Porting to additional operating systems (e.g., Windows)
+* Adding shell completions (e.g., tab-autocomplete for aliases)
+* Improving performance for very large alias sets
 
 ---
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for full terms and conditions.
