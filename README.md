@@ -66,7 +66,7 @@ brew install quickfind
 
 If you **do not have Homebrew** installed, you can install QuickFind manually:
 
-````bash
+```bash
 git clone https://github.com/Aditya-Baindur/quickFind.git 
 cd quickFind
 
@@ -75,7 +75,6 @@ cd quickFind
 
 # Then you can run:
 make install
-
 ```
 
 Once installed, you'll be prompted to enable the `qfcd()` helper function. This may require `sudo` because it writes to a system-wide profile file (`/etc/profile.d/qfcd.sh`) to ensure compatibility with all login shells.
