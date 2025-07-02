@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -O2
-BIN_DIR = /usr/local/bin
-PROFILE_SCRIPT = /etc/profile.d/qfcd.sh
+PREFIX ?= /usr/local
+BIN_DIR = $(PREFIX)/bin
 
 all: quickfind qfcd-init
 
@@ -12,10 +12,10 @@ qfcd-init: qfcd-init.c
 	$(CC) $(CFLAGS) -o qfcd-init qfcd-init.c
 
 install: all
-	@echo "Installing quickfind to $(BIN_DIR)..."
-	sudo cp quickfind $(BIN_DIR)/quickfind
-	@echo "Installing shell-wide qfcd() function..."
-	sudo ./qfcd-init
+	@echo "Installing to $(BIN_DIR)..."
+	mkdir -p $(DESTDIR)$(BIN_DIR)
+	cp quickfind $(DESTDIR)$(BIN_DIR)/
+	cp qfcd-init $(DESTDIR)$(BIN_DIR)/
 	@echo
 	@echo "✅ Installation complete."
 	@echo
